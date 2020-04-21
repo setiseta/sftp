@@ -1,14 +1,6 @@
 # SFTP
 
-![Docker Automated build](https://img.shields.io/docker/automated/atmoz/sftp.svg) ![Docker Build Status](https://img.shields.io/docker/build/atmoz/sftp.svg) ![Docker Stars](https://img.shields.io/docker/stars/atmoz/sftp.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/atmoz/sftp.svg)
-
-![OpenSSH logo](https://raw.githubusercontent.com/atmoz/sftp/master/openssh.png "Powered by OpenSSH")
-
-# Supported tags and respective `Dockerfile` links
-
-- [`debian-stretch`, `debian`, `latest` (*Dockerfile*)](https://github.com/atmoz/sftp/blob/master/Dockerfile) [![](https://images.microbadger.com/badges/image/atmoz/sftp.svg)](http://microbadger.com/images/atmoz/sftp "Get your own image badge on microbadger.com")
-- [`debian-jessie` (*Dockerfile*)](https://github.com/atmoz/sftp/blob/debian-jessie/Dockerfile) [![](https://images.microbadger.com/badges/image/atmoz/sftp:debian-jessie.svg)](http://microbadger.com/images/atmoz/sftp:debian-jessie "Get your own image badge on microbadger.com")
-- [`alpine` (*Dockerfile*)](https://github.com/atmoz/sftp/blob/alpine/Dockerfile) [![](https://images.microbadger.com/badges/image/atmoz/sftp:alpine.svg)](http://microbadger.com/images/atmoz/sftp:alpine "Get your own image badge on microbadger.com")
+Forked from atmoz/sftp
 
 # Securely share your files
 
@@ -38,7 +30,7 @@ This is an automated build linked with the [debian](https://hub.docker.com/_/deb
 ## Simplest docker run example
 
 ```
-docker run -p 22:22 -d atmoz/sftp foo:pass:::upload
+docker run -p 22:22 -d seti/sftp foo:pass:::upload
 ```
 
 User "foo" with password "pass" can login with sftp and upload files to a folder called "upload". No mounted directories or custom UID/GID. Later you can inspect the files and use `--volumes-from` to mount them somewhere else (or see next example).
@@ -50,7 +42,7 @@ Let's mount a directory and set UID:
 ```
 docker run \
     -v /host/upload:/home/foo/upload \
-    -p 2222:22 -d atmoz/sftp \
+    -p 2222:22 -d seti/sftp \
     foo:pass:1001
 ```
 
@@ -58,7 +50,7 @@ docker run \
 
 ```
 sftp:
-    image: atmoz/sftp
+    image: seti/sftp
     volumes:
         - /host/upload:/home/foo/upload
     ports:
@@ -76,7 +68,7 @@ The OpenSSH server runs by default on port 22, and in this example, we are forwa
 docker run \
     -v /host/users.conf:/etc/sftp/users.conf:ro \
     -v mySftpVolume:/home \
-    -p 2222:22 -d atmoz/sftp
+    -p 2222:22 -d seti/sftp
 ```
 
 /host/users.conf:
@@ -94,7 +86,7 @@ Add `:e` behind password to mark it as encrypted. Use single quotes if using ter
 ```
 docker run \
     -v /host/share:/home/foo/share \
-    -p 2222:22 -d atmoz/sftp \
+    -p 2222:22 -d seti/sftp \
     'foo:$1$0G2g0GSt$ewU0t6GXG15.0hWoOX8X9.:e:1001'
 ```
 
@@ -110,7 +102,7 @@ docker run \
     -v /host/id_rsa.pub:/home/foo/.ssh/keys/id_rsa.pub:ro \
     -v /host/id_other.pub:/home/foo/.ssh/keys/id_other.pub:ro \
     -v /host/share:/home/foo/share \
-    -p 2222:22 -d atmoz/sftp \
+    -p 2222:22 -d seti/sftp \
     foo::1001
 ```
 
@@ -123,7 +115,7 @@ docker run \
     -v /host/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key \
     -v /host/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
     -v /host/share:/home/foo/share \
-    -p 2222:22 -d atmoz/sftp \
+    -p 2222:22 -d seti/sftp \
     foo::1001
 ```
 
@@ -164,7 +156,7 @@ bindmount /data/common /home/peter/common
 bindmount /data/docs /home/peter/docs --read-only
 ```
 
-**NOTE:** Using `mount` requires that your container runs with the `CAP_SYS_ADMIN` capability turned on. [See this answer for more information](https://github.com/atmoz/sftp/issues/60#issuecomment-332909232).
+**NOTE:** Using `mount` requires that your container runs with the `CAP_SYS_ADMIN` capability turned on. [See this answer for more information](https://github.com/seti/sftp/issues/60#issuecomment-332909232).
 
 # What's the difference between Debian and Alpine?
 
